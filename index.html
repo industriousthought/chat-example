@@ -54,11 +54,31 @@
   var socket,
       nick;
 
+  var message = function(name, msg) {
+
+    return new Promise(function(resolve, reject) {
+
+      socket.emit(name, msg);
+
+      resolve('Socket message delivered.');
+
+    });
+
+
+  };
+
   $('#login').submit(function(){
     socket = io();
     nick = $('#l').val();
       
-    socket.emit('login', nick);
+    message('login', nick).then(function(response) {
+
+        console.log('Loggin sent', response);
+
+    }, function(error) {
+
+        console.error('Loggin failed', error);
+    });
 
     $('#login').fadeOut();
 
@@ -72,11 +92,19 @@
   });
 
   $('#message').submit(function(){
+    
+    var msg = nick + ": " + $('#m').val();
 
-    socket.emit('chat message', nick + ': ' + $('#m').val());
+    message('chat message', msg).then(function(response) {
 
-    $('#m').val('');
+        $('#m').val('');
+        console.log('Chat message sent.', response);
 
+    }, function(error) {
+
+        console.error('Chat message not sent!', error);
+
+    });
     return false;
 
   });
