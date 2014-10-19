@@ -18,6 +18,8 @@
 
       form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
 
+      #login { position: abosulte; width : 100%; height: 100%; background: #000; top: 0px; left: 0px }
+
       #messages { list-style-type: none; margin: 0; padding: 0; }
 
       #messages li { padding: 5px 10px; }
@@ -29,10 +31,15 @@
   </head>
 
   <body>
+    
+      
+    <form id="login" action="">
+      <input id="l" autocomplete="off" /><button>Login</button>
+   </form>
 
     <ul id="messages"></ul>
 
-    <form action="">
+    <form id="message" action="">
 
       <input id="m" autocomplete="off" /><button>Send</button>
 
@@ -44,11 +51,29 @@
 
 <script>
 
-  var socket = io();
+  var socket,
+      nick;
 
-  $('form').submit(function(){
+  $('#login').submit(function(){
+    socket = io();
+    nick = $('#l').val();
+      
+    socket.emit('login', nick);
 
-    socket.emit('chat message', $('#m').val());
+    $('#login').fadeOut();
+
+    socket.on('chat message', function(msg){
+
+      $('#messages').append($('<li>').text(msg));
+
+    });
+
+    return false;
+  });
+
+  $('#message').submit(function(){
+
+    socket.emit('chat message', nick + ': ' + $('#m').val());
 
     $('#m').val('');
 
@@ -56,11 +81,6 @@
 
   });
 
- socket.on('chat message', function(msg){
-
-    $('#messages').append($('<li>').text(msg));
-
-  });
 
 </script>
 

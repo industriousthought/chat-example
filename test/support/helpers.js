@@ -5,13 +5,3 @@ var should = chai.should();
 chai.use(chai_http);
 
 
-
-describe('basic', function(){
-
-  it('should pass a test', function(){
-
-    "wow".should.equal("wow");
-
-  });
-
-});
