@@ -49,68 +49,7 @@
 
 <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 
-<script>
-
-  var socket,
-      nick;
-
-  var message = function(name, msg) {
-
-    return new Promise(function(resolve, reject) {
-
-      socket.emit(name, msg);
-
-      resolve('Socket message delivered.');
-
-    });
-
-
-  };
-
-  $('#login').submit(function(){
-    socket = io();
-    nick = $('#l').val();
-      
-    message('login', nick).then(function(response) {
-
-        console.log('Loggin sent', response);
-
-    }, function(error) {
-
-        console.error('Loggin failed', error);
-    });
-
-    $('#login').fadeOut();
-
-    socket.on('chat message', function(msg){
-
-      $('#messages').append($('<li>').text(msg));
-
-    });
-
-    return false;
-  });
-
-  $('#message').submit(function(){
-    
-    var msg = nick + ": " + $('#m').val();
-
-    message('chat message', msg).then(function(response) {
-
-        $('#m').val('');
-        console.log('Chat message sent.', response);
-
-    }, function(error) {
-
-        console.error('Chat message not sent!', error);
-
-    });
-    return false;
-
-  });
-
-
-</script>
+<script src="./client/bundle.js"></script>
 
     </body>
 

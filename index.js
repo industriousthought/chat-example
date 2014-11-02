@@ -4,6 +4,11 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 
+app.get('/client/bundle.js', function(req, res){
+        res.sendFile('/home/industriousthought/Web/chat-example/client/bundle.js');
+
+        });
+
 app.get('/', function(req, res){
 
         res.sendFile('/home/industriousthought/Web/chat-example/index.html');
@@ -24,6 +29,7 @@ io.on('connection', function(socket){
 
         socket.on('login', function(msg){
             io.emit('chat message', msg + ' logged in');
+            console.log(msg + ' logged in');
         });
 
         socket.on('chat message', function(msg){
